@@ -1,7 +1,12 @@
 {
   "name": "libai",
-  "main": "dist/libai.js",
-  "types": "dist/libai.d.ts",
+  "main": "./dist/cjs/libai.js",
+  "module": "./dist/esm/libai.js",
+  "types": "./dist/esm/types/libai.d.ts",
+  "exports": {
+    "import": "./dist/esm/libai.js",
+    "require": "./dist/cjs/libai.js"
+  },
   "type": "module",
   "readme": "./README.md",
   "repository": {
@@ -14,7 +19,9 @@
     "url": "https://decryptable.dev"
   },
   "scripts": {
-    "build": "tsc"
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build": "npm run build:esm && npm run build:cjs"
   },
   "devDependencies": {
     "@types/bun": "^1.2.10"

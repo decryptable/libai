@@ -107,7 +107,7 @@ web_modules/
 .env.local
 
 bun.lockb
-
+example.js
 # parcel-bundler cache (https://parceljs.org/)
 
 .parcel-cache

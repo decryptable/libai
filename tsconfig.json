@@ -10,10 +10,9 @@
     "declaration": true,
     "allowJs": true,
 
-    // Bundler mode
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "allowImportingTsExtensions": false,
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": false,
     "noEmit": false,
 
     // Best practices

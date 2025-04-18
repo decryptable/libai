@@ -1,5 +1,5 @@
 import { v7 } from "uuid";
-import { events, stream } from 'fetch-event-stream';
+import { stream } from 'fetch-event-stream';
 /**
  * Sends a chat message to the AI service and retrieves the response, optionally streaming the response events.
  *
