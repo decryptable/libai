@@ -1,0 +1,29 @@
+{
+  "name": "libai",
+  "main": "dist/libai.js",
+  "types": "dist/libai.d.ts",
+  "type": "module",
+  "readme": "./README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/decryptable/libai",
+    "directory": "./src"
+  },
+  "author": {
+    "name": "decryptable",
+    "url": "https://decryptable.dev"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.10"
+  },
+  "peerDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "fetch-event-stream": "^0.1.5",
+    "uuid": "^11.1.0"
+  }
+}
