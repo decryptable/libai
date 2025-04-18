@@ -5,7 +5,8 @@
       "module": "CommonJS",
       "target": "ES2019",
       "declaration": true,
-      "declarationDir": "./dist/cjs/types"
+      "declarationDir": "./dist/cjs/types",
+      "removeComments": false
     }
   }
   

@@ -5,7 +5,8 @@
       "module": "ESNext",
       "target": "ESNext",
       "declaration": true,
-      "declarationDir": "./dist/esm/types"
+      "declarationDir": "./dist/esm/types",
+      "removeComments": false
     }
   }
   

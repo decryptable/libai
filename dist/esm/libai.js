@@ -1,1 +1,273 @@
-function Y(x,V=0){return(H[x[V+0]]+H[x[V+1]]+H[x[V+2]]+H[x[V+3]]+"-"+H[x[V+4]]+H[x[V+5]]+"-"+H[x[V+6]]+H[x[V+7]]+"-"+H[x[V+8]]+H[x[V+9]]+"-"+H[x[V+10]]+H[x[V+11]]+H[x[V+12]]+H[x[V+13]]+H[x[V+14]]+H[x[V+15]]).toLowerCase()}var H=[];for(let x=0;x<256;++x)H.push((x+256).toString(16).slice(1));var F,P=new Uint8Array(16);function D(){if(!F){if(typeof crypto==="undefined"||!crypto.getRandomValues)throw new Error("crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported");F=crypto.getRandomValues.bind(crypto)}return F(P)}function j(x,V,U){let y;if(x)y=Z(x.random??x.rng?.()??D(),x.msecs,x.seq,V,U);else{const R=Date.now(),$=D();w(K,R,$),y=Z($,K.msecs,K.seq,V,U)}return V??Y(y)}function w(x,V,U){if(x.msecs??=-1/0,x.seq??=0,V>x.msecs)x.seq=U[6]<<23|U[7]<<16|U[8]<<8|U[9],x.msecs=V;else if(x.seq=x.seq+1|0,x.seq===0)x.msecs++;return x}function Z(x,V,U,y,R=0){if(x.length<16)throw new Error("Random bytes length must be >= 16");if(!y)y=new Uint8Array(16),R=0;else if(R<0||R+16>y.length)throw new RangeError(`UUID byte range ${R}:${R+15} is out of buffer bounds`);return V??=Date.now(),U??=x[6]*127<<24|x[7]<<16|x[8]<<8|x[9],y[R++]=V/1099511627776&255,y[R++]=V/4294967296&255,y[R++]=V/16777216&255,y[R++]=V/65536&255,y[R++]=V/256&255,y[R++]=V&255,y[R++]=112|U>>>28&15,y[R++]=U>>>20&255,y[R++]=128|U>>>14&63,y[R++]=U>>>6&255,y[R++]=U<<2&255|x[10]&3,y[R++]=x[11],y[R++]=x[12],y[R++]=x[13],y[R++]=x[14],y[R++]=x[15],y}var K={},B=j;var A=async()=>{try{return(await(await fetch("https://saas.castbox.fm/auth/api/v1/tokens/provider/secret",{headers:{"x-app-id":"ai-seek","content-type":"application/json"},body:JSON.stringify({secret:B()}),method:"POST"})).json()).data.token}catch(x){return console.error(x),null}},z=A;class M extends TransformStream{#x="";constructor(x={allowCR:!1}){super({transform:(V,U)=>{V=this.#x+V;while(!0){const y=V.indexOf("\n"),R=x.allowCR?V.indexOf("\r"):-1;if(R!==-1&&R!==V.length-1&&(y===-1||y-1>R)){U.enqueue(V.slice(0,R)),V=V.slice(R+1);continue}if(y===-1)break;const $=V[y-1]==="\r"?y-1:y;U.enqueue(V.slice(0,$)),V=V.slice(y+1)}this.#x=V},flush:(V)=>{if(this.#x==="")return;const U=x.allowCR&&this.#x.endsWith("\r")?this.#x.slice(0,-1):this.#x;V.enqueue(U)}})}}function W(x){let V=new TextDecoderStream,U=new M({allowCR:!0});return x.pipeThrough(V).pipeThrough(U)}function _(x){let U=/[:]\s*/.exec(x),y=U&&U.index;if(y)return[x.substring(0,y),x.substring(y+U[0].length)]}function Q(x,V,U){if(!x.get(V))x.set(V,U)}async function*T(x,V){if(!x.body)return;let U=W(x.body),y,R=U.getReader(),$;for(;;){if(V&&V.aborted)return R.cancel();if(y=await R.read(),y.done)return;if(!y.value){if($)yield $;$=void 0;continue}let[X,g]=_(y.value)||[];if(!X)continue;if(X==="data")$||={},$[X]=$[X]?$[X]+"\n"+g:g;else if(X==="event")$||={},$[X]=g;else if(X==="id")$||={},$[X]=+g||g;else if(X==="retry")$||={},$[X]=+g||void 0}}async function G(x,V){let U=new Request(x,V);Q(U.headers,"Accept","text/event-stream"),Q(U.headers,"Content-Type","application/json");let y=await fetch(U);if(!y.ok)throw y;return T(y,U.signal)}var m=async(x,V,U,y,R,$)=>{try{const X=await G("https://ai-seek.thebetter.ai/v3/chat/send",{headers:{"X-App-Id":"ai-seek","X-Access-Token":V,"content-type":"application/json"},body:JSON.stringify({sessionId:R??B(),model:U??"deepseek/deepseek-r1",text:x,restrictedType:"PRO_USER",imageS3Keys:null,fileS3Keys:null,webSearch:y}),method:"POST"});let g;for await(let N of X)try{const E=JSON.parse(N.data);if($)$(E);g+=E.content}catch(E){}return g}catch(X){return null}},C=m;var q=async()=>{try{return(await(await fetch("https://ai-seek.thebetter.ai/v1/chat/list_models",{headers:{"X-App-Id":"ai-seek"}})).json()).data.models}catch(x){return null}},J=q;var S={generateAuthToken:z,getChatResponse:C,getModels:J},V0=S;export{V0 as default};
+// node_modules/uuid/dist/esm-browser/stringify.js
+function unsafeStringify(arr, offset = 0) {
+  return (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + "-" + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + "-" + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + "-" + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + "-" + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase();
+}
+var byteToHex = [];
+for (let i = 0;i < 256; ++i) {
+  byteToHex.push((i + 256).toString(16).slice(1));
+}
+
+// node_modules/uuid/dist/esm-browser/rng.js
+var getRandomValues;
+var rnds8 = new Uint8Array(16);
+function rng() {
+  if (!getRandomValues) {
+    if (typeof crypto === "undefined" || !crypto.getRandomValues) {
+      throw new Error("crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported");
+    }
+    getRandomValues = crypto.getRandomValues.bind(crypto);
+  }
+  return getRandomValues(rnds8);
+}
+
+// node_modules/uuid/dist/esm-browser/v7.js
+function v7(options, buf, offset) {
+  let bytes;
+  if (options) {
+    bytes = v7Bytes(options.random ?? options.rng?.() ?? rng(), options.msecs, options.seq, buf, offset);
+  } else {
+    const now = Date.now();
+    const rnds = rng();
+    updateV7State(_state, now, rnds);
+    bytes = v7Bytes(rnds, _state.msecs, _state.seq, buf, offset);
+  }
+  return buf ?? unsafeStringify(bytes);
+}
+function updateV7State(state, now, rnds) {
+  state.msecs ??= -Infinity;
+  state.seq ??= 0;
+  if (now > state.msecs) {
+    state.seq = rnds[6] << 23 | rnds[7] << 16 | rnds[8] << 8 | rnds[9];
+    state.msecs = now;
+  } else {
+    state.seq = state.seq + 1 | 0;
+    if (state.seq === 0) {
+      state.msecs++;
+    }
+  }
+  return state;
+}
+function v7Bytes(rnds, msecs, seq, buf, offset = 0) {
+  if (rnds.length < 16) {
+    throw new Error("Random bytes length must be >= 16");
+  }
+  if (!buf) {
+    buf = new Uint8Array(16);
+    offset = 0;
+  } else {
+    if (offset < 0 || offset + 16 > buf.length) {
+      throw new RangeError(`UUID byte range ${offset}:${offset + 15} is out of buffer bounds`);
+    }
+  }
+  msecs ??= Date.now();
+  seq ??= rnds[6] * 127 << 24 | rnds[7] << 16 | rnds[8] << 8 | rnds[9];
+  buf[offset++] = msecs / 1099511627776 & 255;
+  buf[offset++] = msecs / 4294967296 & 255;
+  buf[offset++] = msecs / 16777216 & 255;
+  buf[offset++] = msecs / 65536 & 255;
+  buf[offset++] = msecs / 256 & 255;
+  buf[offset++] = msecs & 255;
+  buf[offset++] = 112 | seq >>> 28 & 15;
+  buf[offset++] = seq >>> 20 & 255;
+  buf[offset++] = 128 | seq >>> 14 & 63;
+  buf[offset++] = seq >>> 6 & 255;
+  buf[offset++] = seq << 2 & 255 | rnds[10] & 3;
+  buf[offset++] = rnds[11];
+  buf[offset++] = rnds[12];
+  buf[offset++] = rnds[13];
+  buf[offset++] = rnds[14];
+  buf[offset++] = rnds[15];
+  return buf;
+}
+var _state = {};
+var v7_default = v7;
+// src/utils/generateAuthToken.ts
+var generateAuthToken = async () => {
+  try {
+    const req = await fetch("https://saas.castbox.fm/auth/api/v1/tokens/provider/secret", {
+      headers: {
+        "x-app-id": "ai-seek",
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({
+        secret: v7_default()
+      }),
+      method: "POST"
+    });
+    const res = await req.json();
+    return res.data.token;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+var generateAuthToken_default = generateAuthToken;
+
+// node_modules/fetch-event-stream/esm/deps/jsr.io/@std/streams/0.221.0/text_line_stream.js
+class TextLineStream extends TransformStream {
+  #currentLine = "";
+  constructor(options = { allowCR: false }) {
+    super({
+      transform: (chars, controller) => {
+        chars = this.#currentLine + chars;
+        while (true) {
+          const lfIndex = chars.indexOf("\n");
+          const crIndex = options.allowCR ? chars.indexOf("\r") : -1;
+          if (crIndex !== -1 && crIndex !== chars.length - 1 && (lfIndex === -1 || lfIndex - 1 > crIndex)) {
+            controller.enqueue(chars.slice(0, crIndex));
+            chars = chars.slice(crIndex + 1);
+            continue;
+          }
+          if (lfIndex === -1)
+            break;
+          const endIndex = chars[lfIndex - 1] === "\r" ? lfIndex - 1 : lfIndex;
+          controller.enqueue(chars.slice(0, endIndex));
+          chars = chars.slice(lfIndex + 1);
+        }
+        this.#currentLine = chars;
+      },
+      flush: (controller) => {
+        if (this.#currentLine === "")
+          return;
+        const currentLine = options.allowCR && this.#currentLine.endsWith("\r") ? this.#currentLine.slice(0, -1) : this.#currentLine;
+        controller.enqueue(currentLine);
+      }
+    });
+  }
+}
+
+// node_modules/fetch-event-stream/esm/utils.js
+function stream(input) {
+  let decoder = new TextDecoderStream;
+  let split = new TextLineStream({ allowCR: true });
+  return input.pipeThrough(decoder).pipeThrough(split);
+}
+function split(input) {
+  let rgx = /[:]\s*/;
+  let match = rgx.exec(input);
+  let idx = match && match.index;
+  if (idx) {
+    return [
+      input.substring(0, idx),
+      input.substring(idx + match[0].length)
+    ];
+  }
+}
+function fallback(headers, key, value) {
+  let tmp = headers.get(key);
+  if (!tmp)
+    headers.set(key, value);
+}
+
+// node_modules/fetch-event-stream/esm/mod.js
+async function* events(res, signal) {
+  if (!res.body)
+    return;
+  let iter = stream(res.body);
+  let line, reader = iter.getReader();
+  let event;
+  for (;; ) {
+    if (signal && signal.aborted) {
+      return reader.cancel();
+    }
+    line = await reader.read();
+    if (line.done)
+      return;
+    if (!line.value) {
+      if (event)
+        yield event;
+      event = undefined;
+      continue;
+    }
+    let [field, value] = split(line.value) || [];
+    if (!field)
+      continue;
+    if (field === "data") {
+      event ||= {};
+      event[field] = event[field] ? event[field] + "\n" + value : value;
+    } else if (field === "event") {
+      event ||= {};
+      event[field] = value;
+    } else if (field === "id") {
+      event ||= {};
+      event[field] = +value || value;
+    } else if (field === "retry") {
+      event ||= {};
+      event[field] = +value || undefined;
+    }
+  }
+}
+async function stream2(input, init) {
+  let req = new Request(input, init);
+  fallback(req.headers, "Accept", "text/event-stream");
+  fallback(req.headers, "Content-Type", "application/json");
+  let r = await fetch(req);
+  if (!r.ok)
+    throw r;
+  return events(r, req.signal);
+}
+
+// src/utils/getChatResponse.ts
+var getChatResponse = async (message, authToken, model, webSearch, session, onStream) => {
+  try {
+    const events3 = await stream2("https://ai-seek.thebetter.ai/v3/chat/send", {
+      headers: {
+        "X-App-Id": "ai-seek",
+        "X-Access-Token": authToken,
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({
+        sessionId: session ?? v7_default(),
+        model: model ?? "deepseek/deepseek-r1",
+        text: message,
+        restrictedType: "PRO_USER",
+        imageS3Keys: null,
+        fileS3Keys: null,
+        webSearch
+      }),
+      method: "POST"
+    });
+    let finalResponse;
+    for await (let event of events3) {
+      try {
+        const data = JSON.parse(event.data);
+        if (onStream) {
+          onStream(data);
+        }
+        finalResponse += data.content;
+      } catch (error) {
+      }
+    }
+    return finalResponse;
+  } catch (error) {
+    return null;
+  }
+};
+var getChatResponse_default = getChatResponse;
+
+// src/utils/getModels.ts
+var getModels = async () => {
+  try {
+    const req = await fetch("https://ai-seek.thebetter.ai/v1/chat/list_models", {
+      headers: {
+        "X-App-Id": "ai-seek"
+      }
+    });
+    const res = await req.json();
+    return res.data.models;
+  } catch (error) {
+    return null;
+  }
+};
+var getModels_default = getModels;
+
+// src/libai.ts
+var AI = {
+  generateAuthToken: generateAuthToken_default,
+  getChatResponse: getChatResponse_default,
+  getModels: getModels_default
+};
+var libai_default = AI;
+export {
+  libai_default as default
+};

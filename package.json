@@ -20,8 +20,8 @@
   },
   "scripts": {
     "build:types": "tsc --emitDeclarationOnly --outDir dist/types",
-    "build:esm": "bun build src/libai.ts --outdir dist/esm --target browser --format esm --minify --bundle",
-    "build:cjs": "esbuild src/libai.ts --bundle --platform=node --format=cjs --outfile=dist/cjs/libai.js --minify",
+    "build:esm": "bun build src/libai.ts --outdir dist/esm --target browser --format esm --bundle",
+    "build:cjs": "esbuild src/libai.ts --bundle --platform=node --format=cjs --outfile=dist/cjs/libai.js",
     "build": "npm run build:types && npm run build:esm && npm run build:cjs"
   },
   "devDependencies": {
@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "fetch-event-stream": "^0.1.5",
-    "libai": "github:decryptable/libai",
     "uuid": "^11.1.0"
   }
 }
