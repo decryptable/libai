@@ -2,7 +2,7 @@
   "name": "libai",
   "main": "./dist/cjs/libai.js",
   "module": "./dist/esm/libai.js",
-  "types": "./dist/esm/types/libai.d.ts",
+  "types": "./dist/types/libai.d.ts",
   "exports": {
     "import": "./dist/esm/libai.js",
     "require": "./dist/cjs/libai.js"
@@ -19,18 +19,21 @@
     "url": "https://decryptable.dev"
   },
   "scripts": {
-    "build:esm": "tsc -p tsconfig.esm.json",
-    "build:cjs": "tsc -p tsconfig.cjs.json",
-    "build": "npm run build:esm && npm run build:cjs"
+    "build:types": "tsc --emitDeclarationOnly --outDir dist/types",
+    "build:esm": "bun build src/libai.ts --outdir dist/esm --target browser --format esm --minify --bundle",
+    "build:cjs": "esbuild src/libai.ts --bundle --platform=node --format=cjs --outfile=dist/cjs/libai.js --minify",
+    "build": "npm run build:types && npm run build:esm && npm run build:cjs"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.10"
+    "@types/bun": "^1.2.10",
+    "esbuild": "^0.25.2"
   },
   "peerDependencies": {
     "typescript": "^5.8.3"
   },
   "dependencies": {
     "fetch-event-stream": "^0.1.5",
+    "libai": "github:decryptable/libai",
     "uuid": "^11.1.0"
   }
 }

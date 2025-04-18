@@ -13,7 +13,6 @@
     "moduleResolution": "node",
     "allowImportingTsExtensions": false,
     "verbatimModuleSyntax": false,
-    "noEmit": false,
 
     // Best practices
     "strict": true,
